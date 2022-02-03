@@ -9,7 +9,7 @@ function setup() {
   totalCases = [];
 
   push();
-  textStyle(BOLD);
+  // textStyle(BOLD);
   textSize(20);
   text("Cases For Each Variant",2200/2,25);
   pop();
@@ -53,7 +53,13 @@ function buildGraph(maxValue){
     push();
     let c = color(135,206,235);
     fill(c);
-    rect(200,50+(100*r),totalCases[r]/2000, 100);
+    let barLength = 50 + (100*r);
+    rect(200,barLength,totalCases[r]/2000, 100);
+    pop();
+
+    push();
+    textSize(16);
+    text(totalCases[r],215+totalCases[r]/2000,100 + r*100);
     pop();
   }
 }

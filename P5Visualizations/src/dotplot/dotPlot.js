@@ -4,33 +4,28 @@ function preload(){
   table = loadTable("../../CSV/covid_variants(total).csv","csv","header");
 }
 function setup() {
-  createCanvas(2200 , 2600);
+  createCanvas(2200 , 2800);
   background(220);
   totalCases = [];
+
   push();
-  let variants = "Variants";
-  translate(variants)
-  textStyle(BOLD);
+  // textStyle(BOLD);
   textSize(20);
-  text(variants,25,2600/2);
+  text("Cases For Each Variant",2200/2,25);
   pop();
 
-  for(let r = 0; r < table.getRowCount(); r++) {
-    const name = table.getString(r, "Variant");
-    const cases = table.getNum(r,"Cases");
-    
-    totalCases[r] = cases;
-    text(name, 100 , 50+r*100);
-    line(110, 50+r*100,2200,2500);
-    // rect(200,100*r,totalCases[r]/2000, 100);
-    circle(totalCases[r]/2000,100*r,totalCases[r]/2000,50);
-    
-  }
+  push();
+  let variants = "Variants";
+  textStyle(BOLD);
+  textSize(20);
+  text(variants,25,50);
+  pop();
+
+  gatherData();
 
   const maxValue = max(totalCases);
-  for(let j = 0;j<maxValue;j = j + 200000){
-    text(j, 200 + j/2000,2500);
-  }
+  buildGraph(maxValue);
+  
   push();
   textStyle(BOLD);
   textSize(20);
@@ -38,10 +33,39 @@ function setup() {
   pop();
 }
 
+function gatherData(){
+  for(let r = 0; r < table.getRowCount(); r++){
+    totalCases[r] = table.getNum(r,"Cases");
+    line(200,100+r*100,2800,100+r*100);
+  }
+}
 
-// function draw() {
-  
-//   for(let r = 0; r < table.getRowCount(); r++){
+function buildGraph(maxValue){
+  for(let j = 0;j<maxValue;j = j + 200000){
+    line(200 + j/2000,50,200+ j/2000,2450);
+    textStyle(BOLD);
+    text(j, 200 + j/2000,2500);
+  }
 
-//   }
-// }
+  for(let r = 0; r < table.getRowCount(); r++) {
+    const name = table.getString(r, "Variant");
+    textStyle(BOLD);
+    text(name, 100, 100+r*100);
+    push();
+    let c = color(135,206,235);
+    fill(c);
+    circle(200+totalCases[r]/2000,100 + r*100,20);
+    pop();
+
+    push();
+    textSize(16);
+    text(totalCases[r],215+totalCases[r]/2000,100 + r*100);
+    pop();
+  }
+}
+
+function labelGraph(label){
+  textStyle(BOLD);
+  textSize(20);
+  text("Cases",2200/2,2550);
+}
